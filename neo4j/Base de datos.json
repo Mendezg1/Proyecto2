@@ -1,0 +1,96 @@
+﻿[
+  {
+    "n": {
+"identity": 0,
+"labels": [
+        "casa"
+      ],
+"properties": {
+"area": "10x11",
+"ubicacion": "Zona 16",
+"precio": 120000,
+"residencia": "COLONIA",
+"mascotas": false,
+"id": 2
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 2,
+"labels": [
+        "casa"
+      ],
+"properties": {
+"area": "5x5",
+"ubicacion": "Zona 15",
+"precio": 25000,
+"residencia": "APARTAMENTO",
+"mascotas": false,
+"id": 4
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 3,
+"labels": [
+        "casa"
+      ],
+"properties": {
+"area": "4X5",
+"ubicacion": "Zona 15",
+"precio": 26000,
+"residencia": "APARTAMENTO",
+"mascotas": true,
+"id": 3
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 4,
+"labels": [
+        "usuario"
+      ],
+"properties": {
+"presupuesto": 100000,
+"ubicacion": "Zona 16",
+"mascotas": true,
+"id": 1
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 6,
+"labels": [
+        "casa"
+      ],
+"properties": {
+"area": "10x9",
+"ubicacion": "Zona 16",
+"precio": 100000,
+"residencia": "CONDOMINIO",
+"mascotas": true,
+"id": 1
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 7,
+"labels": [
+        "casa"
+      ],
+"properties": {
+"area": "10x10",
+"ubicacion": "Zona 16",
+"precio": 115000,
+"residencia": "CONDOMINIO",
+"mascotas": true,
+"id": 5
+      }
+    }
+  }
+]
