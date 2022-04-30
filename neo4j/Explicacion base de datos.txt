@@ -1,0 +1,5 @@
+La base de datos contiene dos etiquetas principales, casa y usuario. Ellas contienen las llaves de propiedad vistas en la base de datos. 
+
+Casa contiene: precio, area, ubicacion, id, residencia, mascostas y habitaciones. Usuario contiene: presupuesto, id, ubicacion y mascotas. Las propiedades que usuario puede tener son variables ya que cada persona que utilice el programa llenará un espacio donde ingresa qué le interesa sobre una casa.
+
+Las relaciones están pensadas como un sistema de "guardados" de una aplicación que su producto son las casas. Como se puede ver en la imagen de relaciones, el usuario tiene 3 casas en guardados, esto quiere decir que sus características le interesan al comprador. 
