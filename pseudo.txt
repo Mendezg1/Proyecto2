@@ -1,0 +1,24 @@
+Registrar Usuario
+
+User←Read
+Password←Read 
+Type←Read
+
+If(!user.exist)
+	If(Type=="Admin")
+		CreateAdmin(User, Password)
+	Elseif(Type=="User")
+		Create(User, Password)
+Else
+	Print "El usuario ya existe"
+
+
+Leer todas las casas
+	
+Querycasas
+FOR(Casas)
+	Print Precio+Area+Zona+Cuartos+Mascotas+TipoR
+
+	
+
+
