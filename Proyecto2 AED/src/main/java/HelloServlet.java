@@ -40,7 +40,7 @@ public class HelloServlet extends HttpServlet {
 		 	response.setCharacterEncoding("UTF-8");
 		 	JSONObject myResponse = new JSONObject();
 		 	
-		 	JSONArray nombresActores = new JSONArray();
+		 	JSONArray Ides = new JSONArray();
 		 	
 		 	 try ( EmbeddedNeo4j greeter = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 		        {
@@ -62,8 +62,8 @@ public class HelloServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 		 	
-		 	myResponse.put("conteo", nombresActores.size()); //Guardo la cantidad de actores
-		 	myResponse.put("actores", nombresActores);
+		 	myResponse.put("conteo", Ides.size()); //Guardo la cantidad de actores
+		 	myResponse.put("casas", Ides);
 		 	out.println(myResponse);
 		 	out.flush();  
 		 	
