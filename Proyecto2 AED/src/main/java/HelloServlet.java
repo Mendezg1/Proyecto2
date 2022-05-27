@@ -42,14 +42,20 @@ public class HelloServlet extends HttpServlet {
 		 	
 		 	JSONArray nombresActores = new JSONArray();
 		 	
-		 	 try ( EmbeddedNeo4j greeter = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Test1234" ) )
+		 	 try ( EmbeddedNeo4j greeter = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 		        {
-				 	LinkedList<String> myactors = greeter.getActors();
-				 	
-				 	for (int i = 0; i < myactors.size(); i++) {
-				 		 //out.println( "<p>" + myactors.get(i) + "</p>" );
-				 		nombresActores.add(myactors.get(i));
-				 	}
+					LinkedList<String> myides = greeter.getIdes();
+					LinkedList<String> myprices = greeter.getPrices();
+					LinkedList<String> myzones = greeter.getZones();
+					LinkedList<String> myareas = greeter.getAreas();
+					LinkedList<String> myhabs = greeter.getHabs();
+					LinkedList<String> myparks = greeter.getParking();
+					
+					Ides.add("ID          " +  "                Precio      " + "                Zona" + "                 Area" + "                 Habitaciones" + "                 Parqueos");
+					for (int i = 0; i < myides.size(); i++) {
+						 //out.println( "<p>" + myactors.get(i) + "</p>" );
+						Ides.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
+					}
 		        	
 		        } catch (Exception e) {
 					// TODO Auto-generated catch block

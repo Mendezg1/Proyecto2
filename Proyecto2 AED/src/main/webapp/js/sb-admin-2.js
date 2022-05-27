@@ -54,22 +54,22 @@
   });
   
   //Evento del botón que me devuelve el listado de actores
-  $("#btn-search-actors").click(function(){
+  $("#btn-search-houses").click(function(){
 		//alert("The button was clicked 1");
 				
 		$.ajax( {
 			
 			type: "GET",
-			url: '/HelloWorld/HelloServlet',
+			url: '/prueba/HelloServlet',
 			success: function(data) {
 				//alert("Result" + data.resultado);
-			    var htmlActorsList = '<ul>';
-				$.each(data.actores, function(i,item){
-					  htmlActorsList += '<li>' + item + '</li>';
+			    var htmlHousesList = '<ul>';
+				$.each(data.casas, function(i,item){
+					  htmlHousesList += '<li>' + item + '</li>';
 				});
-				htmlActorsList += '</ul>';
-				$('#div-listado-actores').html("");
-				$('#div-listado-actores').append(htmlActorsList);
+				htmlHousesList += '</ul>';
+				$('#div-listado-casas').html("");
+				$('#div-listado-casas').append(htmlHousesList);
 			}
 		} );
 		
