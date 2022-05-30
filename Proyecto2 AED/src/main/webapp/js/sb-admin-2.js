@@ -53,6 +53,19 @@
     e.preventDefault();
   });
   
+  $("#btn-crt-user").click(function(){
+				
+		$.ajax( {
+			
+			type: "GET",
+			url: '/prueba/Creation?name=' + $('#txt-user').val() ,
+			success: function(data) {
+			    alert("Resultado: " + data.resultado);
+			}
+		} );
+		
+		
+	});
   //Evento del botón que me devuelve el listado de actores
   $("#btn-search-houses").click(function(){
 		//alert("The button was clicked 1");
