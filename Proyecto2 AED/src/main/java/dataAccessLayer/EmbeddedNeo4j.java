@@ -249,6 +249,36 @@ public class EmbeddedNeo4j implements AutoCloseable{
          }
     }
     
+    public String userCreation(String name) {
+    	try ( Session session = driver.session() )
+        {
+   		 
+   		 String result = session.writeTransaction( new TransactionWork<String>()
+   		 
+            {
+                @Override
+                public String execute( Transaction tx )
+                {
+                	LinkedList<String> users = getUsers();
+                	
+                    if(!users.contains(name)) {
+                    	tx.run( "CREATE (user:usuario {name:'"+name+"'})");
+                    	return "OK";
+                    }
+                    else return "Usuario ya existente";
+                    
+                    
+                }
+            }
+   		 
+   		 );
+            
+            return result;
+        } catch (Exception e) {
+        	return e.getMessage();
+        }
+    }
+    
     public LinkedList<String> getMoviesByActor(String actor)
     {
    	 try ( Session session = driver.session() )
