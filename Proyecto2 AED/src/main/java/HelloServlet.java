@@ -41,21 +41,20 @@ public class HelloServlet extends HttpServlet {
 		 	JSONObject myResponse = new JSONObject();
 		 	
 		 	JSONArray Ides = new JSONArray();
-		 	
 		 	 try ( EmbeddedNeo4j greeter = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 		        {
-					LinkedList<String> myides = greeter.getIdes();
-					LinkedList<String> myprices = greeter.getPrices();
-					LinkedList<String> myzones = greeter.getZones();
-					LinkedList<String> myareas = greeter.getAreas();
-					LinkedList<String> myhabs = greeter.getHabs();
-					LinkedList<String> myparks = greeter.getParking();
-					
-					Ides.add("ID          " +  "                Precio      " + "                Zona" + "                 Area" + "                 Habitaciones" + "                 Parqueos");
-					for (int i = 0; i < myides.size(); i++) {
-						 //out.println( "<p>" + myactors.get(i) + "</p>" );
-						Ides.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
-					}
+				 	LinkedList<String> myides = greeter.getIdes();
+				 	LinkedList<String> myprices = greeter.getPrices();
+				 	LinkedList<String> myzones = greeter.getZones();
+				 	LinkedList<String> myareas = greeter.getAreas();
+				 	LinkedList<String> myhabs = greeter.getHabs();
+				 	LinkedList<String> myparks = greeter.getParking();
+				 	
+				 	Ides.add("ID          " +  "                Precio      " + "                Zona" + "                 Area" + "                 Habitaciones" + "                 Parqueos");
+				 	for (int i = 0; i < myides.size(); i++) {
+				 		 //out.println( "<p>" + myactors.get(i) + "</p>" );
+				 		Ides.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
+				 	}
 		        	
 		        } catch (Exception e) {
 					// TODO Auto-generated catch block

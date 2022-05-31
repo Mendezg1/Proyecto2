@@ -53,6 +53,7 @@
     e.preventDefault();
   });
   
+  
   $("#btn-crt-user").click(function(){
 				
 		$.ajax( {
@@ -66,6 +67,7 @@
 		
 		
 	});
+  
   //Evento del botón que me devuelve el listado de actores
   $("#btn-search-houses").click(function(){
 		//alert("The button was clicked 1");
@@ -90,21 +92,14 @@
 	});
 	
 	//Evento del botón que me devuelve el listado de películas de un determinado actor
-	$("#btn-search-movies-by-actor").click(function(){
+	$("#btn-save-house").click(function(){
 				
 		$.ajax( {
 			
 			type: "GET",
-			url: '/HelloWorld/MoviesByActor?actor_name=' + $('#txt-actor').val(),
+			url: '/prueba/Guardado?name=' + $('#txt-user1').val() + '&prop=' + $('#txt-prop').val() + '&value=' + $('#txt-value').val(),
 			success: function(data) {
-				//alert("Result" + data.resultado);
-			    var htmlMovieList = '<ul>';
-				$.each(data.peliculas, function(i,item){
-					  htmlMovieList += '<li>' + item + '</li>';
-				});
-				htmlMovieList += '</ul>';
-				$('#div-listado-actores').html("");
-				$('#div-listado-actores').append(htmlMovieList);
+			    alert("Resultado: " + data.resultado);
 			}
 		} );
 		
