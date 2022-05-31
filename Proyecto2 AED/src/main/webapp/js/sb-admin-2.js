@@ -59,7 +59,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/prueba/Creation?name=' + $('#txt-user').val() ,
+			url: '/proyectoaed/Creation?name=' + $('#txt-user').val() ,
 			success: function(data) {
 			    alert("Resultado: " + data.resultado);
 			}
@@ -75,7 +75,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/prueba/HelloServlet',
+			url: '/proyectoaed/HelloServlet',
 			success: function(data) {
 				//alert("Result" + data.resultado);
 			    var htmlHousesList = '<ul>';
@@ -97,7 +97,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/prueba/Guardado?name=' + $('#txt-user1').val() + '&prop=' + $('#txt-prop').val() + '&value=' + $('#txt-value').val(),
+			url: '/proyectoaed/Guardado?name=' + $('#txt-user1').val() + '&prop=' + $('#txt-prop').val() + '&value=' + $('#txt-value').val(),
 			success: function(data) {
 			    alert("Resultado: " + data.resultado);
 			}
