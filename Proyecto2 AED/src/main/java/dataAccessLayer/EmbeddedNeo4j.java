@@ -83,6 +83,72 @@ public class EmbeddedNeo4j implements AutoCloseable{
          }
     }
     
+    public LinkedList<String> searchHouse(String price, String area, String zone, String habits, String parking)
+    {
+    	 try ( Session session = driver.session() )
+         {
+    		 
+    		 
+    		 LinkedList<String> result = session.readTransaction( new TransactionWork<LinkedList<String>>()
+             {
+                 @Override
+                 public LinkedList<String> execute( Transaction tx )
+                 {
+                	 String query = "MATCH (house:casa {";
+                     if(area != "") {
+                    	 String ar = area+"m^2";
+                    	 query += "area:'" + ar +"'";
+                     }
+                     if(zone != "") {
+                    	 int zona = Integer.parseInt(zone);
+                    	 query += ", zona:"+zona;
+                     }
+                     if(habits != "") {
+                    	 int habs = Integer.parseInt(habits);
+                    	 query += ", habitaciones:"+habs;
+                     }
+                     if(parking != "") {
+                    	 int parqueos = Integer.parseInt(parking);
+                    	 query += ", parqueos:"+parqueos;
+                     }
+                     query += "})";
+                     if (price != "") {
+                    	 int precio = Integer.parseInt(price);
+                    	 query += "WHERE house.precio <="+precio;
+                     }
+                     if (area != "" || price != "" || zone != "" || habits != "" || parking != "")
+                    	 query+= " RETURN house.ide, house.precio, house.zona, house.area, house.habitaciones, house.parqueos ORDER BY house.ide";
+                     Result result = tx.run(query);
+                     List<Record> registros = result.list();
+                     
+                     LinkedList<String> saves = new LinkedList<String>();
+                	 LinkedList<String> myides = new LinkedList<String>();
+                	 LinkedList<String> myareas = new LinkedList<String>();
+                	 LinkedList<String> myzones = new LinkedList<String>();
+                	 LinkedList<String> myprices = new LinkedList<String>();
+                	 LinkedList<String> myparks = new LinkedList<String>();
+                	 LinkedList<String> myhabs = new LinkedList<String>();
+                	 
+                	 saves.add("\nID          " +  "                Precio      " + "                Zona" + "                 Area" + "                 Habitaciones" + "                 Parqueos");
+                     
+                     for (int i = 0; i < registros.size(); i++) {
+                    	 //myactors.add(registros.get(i).toString());
+                    	 myides.add(registros.get(i).get("house.ide").toString());
+                    	 myprices.add(registros.get(i).get("house.precio").toString());
+                    	 myzones.add(registros.get(i).get("house.zona").toString());
+                    	 myareas.add(registros.get(i).get("house.area").toString());
+                    	 myparks.add(registros.get(i).get("house.parqueos").toString());
+                    	 myhabs.add(registros.get(i).get("house.habitaciones").toString());
+                    	 saves.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
+                     }
+                     return saves;
+                 }
+             } );
+             
+             return result;
+         }
+    }
+    
     public String userCreation(String name) {
     	try ( Session session = driver.session() )
         {
@@ -96,7 +162,7 @@ public class EmbeddedNeo4j implements AutoCloseable{
                 	LinkedList<String> users = getUsers();
                 	
                     if(!users.contains(name)) {
-                    	tx.run( "CREATE (user:usuario {name:'"+name+"'})");
+                    	tx.run( "CREATE (user:usuario {name:'"+name+"', admn:"+0+"})");
                     	return "OK";
                     }
                     else return "Usuario ya existente";
@@ -113,7 +179,50 @@ public class EmbeddedNeo4j implements AutoCloseable{
         }
     }
     
-    public String Relation(String name, String prop, String value) {
+    public String newHouse(String name, String id, String precio, String zona, String area, String habits, String parqueos) {
+    	try ( Session session = driver.session() )
+        {
+   		 
+    		String ar = area+"m^2";
+   		 String result = session.writeTransaction( new TransactionWork<String>()
+   		 
+            {
+                @Override
+                public String execute( Transaction tx )
+                {
+                	
+                	int ide = Integer.parseInt(id);
+                	int price = Integer.parseInt(precio);
+                    int zone = Integer.parseInt(zona);
+                    int habs = Integer.parseInt(habits);
+                    int parks = Integer.parseInt(parqueos);
+                	LinkedList<String> users = getUsers();
+                	
+                    if(users.contains(name)) {
+                    	String veri = verifyAdmn(name);
+                    	if (veri.equals("Y")) {
+                    		tx.run("create (house:casa { ide:"+id+", precio:"+price+", zona:"+zone+", area:'"+ar+"', habitaciones:"+habs+", parqueos:"+parks+"})");
+                    		return "Casa creada correctamente";
+                    	}
+                    	else return "El usuario no es admin";
+                    }
+                    else return "El usuario no existe";
+                    
+                    
+                }
+            }
+   		 
+   		 );
+            
+            return result;
+        } catch (Exception e) {
+        	return e.getMessage();
+        }
+    }
+    
+    
+    
+    public String Relation(String name, String id) {
     	try ( Session session = driver.session() )
         {
    		 
@@ -125,74 +234,19 @@ public class EmbeddedNeo4j implements AutoCloseable{
                 {
                 	try {
                 		
+                		int ide = Integer.parseInt(id);
                 		LinkedList<String> users = getUsers();
                 		
                 		if(users.contains(name)) {
-                			switch(prop) {
-                        	case "id":
-                        		LinkedList<String> myides = getIdes();
-                        		int ide = Integer.parseInt(value);
-                        		if(myides.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {ide:"+ide+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        		
-                        	case "price":
-                        		LinkedList<String> myprices = getPrices();
-                        		int price = Integer.parseInt(value);
-                        		if(myprices.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {precio:"+price+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        		
-                        	case "zone":
-                        		int zone = Integer.parseInt(value);
-                        		LinkedList<String> myzones = getZones();
-                        		if(myzones.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {zona:"+zone+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        		
-                        	case "area":
-                        		LinkedList<String>myareas = getAreas();
-                        		if(myareas.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {area:"+value+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        		
-                        	case "habs":
-                        		int habs = Integer.parseInt(value);
-                        		LinkedList<String> myhabs = getHabs();
-                        		if(myhabs.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {habitaciones:"+habs+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        		
-                        	case "parking":
-                        		int parks = Integer.parseInt(value);
-                        		LinkedList<String> myparks = getParking();
-                        		if(myparks.contains(value)) {
-                        			tx.run( "MATCH (user:usuario {name:'"+name+"'}), (house:casa {parqueos:"+parks+"}) create (user) - [:GUARDADO] -> (house)");
-                            		return "OK";
-                        		}
-                        		else return "Sin registros para el valor ingresado de" + value;
-                        	
-                        	default:
-                        		return "Propiedad desconocida";
-                        	}
+                			tx.run("MATCH (user:usuario {name:'"+name+"'}), (house:casa {ide:"+id+"}) create (user) - [:GUARDADO] -> (house)");
                 		}
                 		else {
                 			
                 			userCreation(name);
-                			Relation(name, prop, value);
+                			Relation(name, id);
                 			
                 		}
-                        return "OK";
+                        return "Casa "+ id+" guardada para el usuario " + name;
                 	}
                 	catch (Exception e) {
                 		
@@ -202,6 +256,8 @@ public class EmbeddedNeo4j implements AutoCloseable{
             }
    		 
    		 );
+   		 
+   		 
             
             return result;
         } catch (Exception e) {
@@ -346,7 +402,131 @@ public class EmbeddedNeo4j implements AutoCloseable{
          }
     }
     
+    public String verifyAdmn(String name) {
+    	try ( Session session = driver.session() )
+        {
+   		 
+    	    String result = session.writeTransaction( new TransactionWork<String>()
+   		 
+            {
+                @Override
+                public String execute( Transaction tx )
+                {
+                	String res = "";
+                	LinkedList<String> users = getUsers();
+                	if(users.contains(name)) {
+                		Result result = tx.run("MATCH (n:usuario) 	WHERE n.name='"+name+"' RETURN n.admn");
+                		String admn="";
+                		List<Record> registros = result.list();
+                		admn = registros.get(0).get("n.admn").toString();
+                		if (admn.equals("1")) {
+                			res = "Y";
+                		}
+                		else res = "N";
+                	}
+                	else res = "NE";
+                	return res;
+                }
+            }
+   		 
+   		 );
+            
+            return result;
+        } catch (Exception e) {
+        	return e.getMessage();
+        }
+    }
     
+    
+    
+    public String Delete(String name, String id) {
+    	try ( Session session = driver.session() )
+        {
+   		 
+    		
+    	int ide = Integer.parseInt(id);
+   		 String result = session.writeTransaction( new TransactionWork<String>()
+   		 
+            {
+                @Override
+                public String execute( Transaction tx )
+                {
+                	int ide = Integer.parseInt(id);
+                	String res = "";
+                	LinkedList<String> ids = getIdes();
+                	
+                	String exist = verifyAdmn(name);
+                	if(exist.equals("Y")) {
+                		if(ids.contains(id)) {
+                			tx.run("MATCH (house:casa) WHERE house.ide="+ide+" DETACH DELETE house");
+                			res = "Casa eliminada correctamente";
+                		}
+                		else res = "La casa no existe, no se puede eliminar.";
+                	}
+                	else if (exist.equals("NE")) {
+                		res = "El usuario no existe";
+                	}
+                	else res="El usuario no es admin";
+                	return res;
+                }
+            }
+   		 
+   		 );
+            
+            return result;
+        } catch (Exception e) {
+        	return e.getMessage();
+        }
+    }
+    
+    public LinkedList<String> seeProf(String name)
+    {
+    	 try ( Session session = driver.session() )
+         {
+    		 
+    		 
+    		 LinkedList<String> saved = session.readTransaction( new TransactionWork<LinkedList<String>>()
+             {
+                 @Override
+                 public LinkedList<String> execute( Transaction tx )
+                 {
+                	 
+                	 LinkedList<String> saves = new LinkedList<String>();
+                	 LinkedList<String> myides = new LinkedList<String>();
+                	 LinkedList<String> myareas = new LinkedList<String>();
+                	 LinkedList<String> myzones = new LinkedList<String>();
+                	 LinkedList<String> myprices = new LinkedList<String>();
+                	 LinkedList<String> myparks = new LinkedList<String>();
+                	 LinkedList<String> myhabs = new LinkedList<String>();
+                	 LinkedList<String> users = getUsers();
+                	 
+                	 saves.add("ID          " +  "                Precio      " + "                Zona" + "                 Area" + "                 Habitaciones" + "                 Parqueos");
+                	 
+                	 if(users.contains(name)) {
+                		 Result result = tx.run( "MATCH (user:usuario {name:'"+name+"'}) - [:GUARDADO] -> (house:casa) RETURN house.ide, house.precio, house.area, house.zona, house.habitaciones, house.parqueos ORDER BY house.ide");
+                         
+                         List<Record> registros = result.list();
+                         for (int i = 0; i < registros.size(); i++) {
+                        	 //myactors.add(registros.get(i).toString());
+                        	 myides.add(registros.get(i).get("house.ide").toString());
+                        	 myprices.add(registros.get(i).get("house.precio").toString());
+                        	 myzones.add(registros.get(i).get("house.zona").toString());
+                        	 myareas.add(registros.get(i).get("house.area").toString());
+                        	 myparks.add(registros.get(i).get("house.parqueos").toString());
+                        	 myhabs.add(registros.get(i).get("house.habitaciones").toString());
+                        	 saves.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
+                         }
+                	 }
+                	 
+                	 return saves;
+                	 
+                    
+                 }
+             } );
+             
+             return saved;
+         }
+    }
     
     public LinkedList<String> getUsers()
     {

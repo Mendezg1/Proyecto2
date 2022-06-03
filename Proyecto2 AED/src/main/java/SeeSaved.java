@@ -14,23 +14,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dataAccessLayer.EmbeddedNeo4j;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Guardado
+ * Servlet implementation class SeeSaved
  */
-@WebServlet("/Guardado")
-public class Guardado extends HttpServlet {
+@WebServlet("/SeeSaved")
+public class SeeSaved extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Guardado() {
+    public SeeSaved() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,18 +40,19 @@ public class Guardado extends HttpServlet {
 	 	response.setCharacterEncoding("UTF-8");
 	 	JSONObject myResponse = new JSONObject();
 	 	
-	 	JSONArray insertionResult = new JSONArray();
+	 	JSONArray guardados = new JSONArray();
 	 	
-	 	String id = request.getParameter("id");
 	 	String name = request.getParameter("name");
 	 	
 	 	 try ( EmbeddedNeo4j neo4jDriver = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 	        {
-	 		String myResultTx = neo4jDriver.Relation(name,id);
-        	
-		 	myResponse.put("resultado", myResultTx);
+	 		 	LinkedList<String> saved = neo4jDriver.seeProf(name);
+	 		 	
+	 		 	for(int i = 0; i < saved.size(); i++) {
+	 		 		guardados.add(saved.get(i));
+	 		 	}
 	        	
-			 	//myResponse.put("resultado", myResultTx);
+			 	
 	        } catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,8 +60,9 @@ public class Guardado extends HttpServlet {
 			}
 	 	
 	 	
+	 	myResponse.put("guardados", guardados);
 	 	out.println(myResponse);
-	 	out.flush();
+	 	out.flush();  
 	}
 
 	/**

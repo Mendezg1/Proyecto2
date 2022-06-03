@@ -14,23 +14,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dataAccessLayer.EmbeddedNeo4j;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Guardado
+ * Servlet implementation class SearchH
  */
-@WebServlet("/Guardado")
-public class Guardado extends HttpServlet {
+@WebServlet("/SearchH")
+public class SearchH extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Guardado() {
+    public SearchH() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,18 +40,24 @@ public class Guardado extends HttpServlet {
 	 	response.setCharacterEncoding("UTF-8");
 	 	JSONObject myResponse = new JSONObject();
 	 	
-	 	JSONArray insertionResult = new JSONArray();
+	 	JSONArray resultados = new JSONArray();
 	 	
-	 	String id = request.getParameter("id");
-	 	String name = request.getParameter("name");
+	 	String price = request.getParameter("price");
+	 	String zone = request.getParameter("zone");
+	 	String area = request.getParameter("area");
+	 	String habs = request.getParameter("habits");
+	 	String parks = request.getParameter("parking");
+	 	
 	 	
 	 	 try ( EmbeddedNeo4j neo4jDriver = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 	        {
-	 		String myResultTx = neo4jDriver.Relation(name,id);
-        	
-		 	myResponse.put("resultado", myResultTx);
+	 		 	LinkedList<String> found = neo4jDriver.searchHouse(price, area, zone, habs, parks);
+	 		 	for(int i = 0; i < found.size(); i++) {
+	 		 		resultados.add(found.get(i));
+	 		 	}
+	 		 	
 	        	
-			 	//myResponse.put("resultado", myResultTx);
+			 	
 	        } catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,6 +65,7 @@ public class Guardado extends HttpServlet {
 			}
 	 	
 	 	
+	 	myResponse.put("encontrados", resultados);
 	 	out.println(myResponse);
 	 	out.flush();
 	}

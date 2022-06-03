@@ -28,7 +28,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="img/logo.png" alt="..." height="80">
+                <img src="img/logo.png" alt="..." height="80" >
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -36,10 +36,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.html"> <h4> Inicio </h4> </a>
+                    <a class="nav-link" href="index.html"> <h4> Inicio </h4> </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="registro.html"> <h4> Registro </h4> </a>
+                    <a class="nav-link active" aria-current="page" href="registro.html"> <h4> Registro </h4> </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.html"> <h4> Perfil </h4> </a>
@@ -65,7 +65,7 @@
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <center> <h1 class="h1 text-gray-900 mb-4"> ¿Estas listo para conocer tu nuevo hogar? </h1> </center>
+            <center> <h1 class="h1 text-gray-900 mb-4"> ¿Aún no tienes cuenta? Registrate ahora </h1> </center>
 
             <!-- Main Content -->
             <div id="content">
@@ -74,53 +74,16 @@
                     <!-- Content Row -->
                     <div class="row">
 					<div class="col-lg-4"></div>
-                    <div class="col-lg-4">
-                    		<div class="text-center">
-                                <h1 class="h5 text-gray-900 mb-4"> Ingresa tu usuario </h1>
-                            </div>
-                            <form class="user">
-                            <input type="text" class="form-control" id="txt-user" placeholder="Juan1234">
-                            <br>
-                            </form>
+                    <div class="col-lg-4">                        
                             <div class="text-center">
-                                <h1 class="h5 text-gray-900 mb-4"> Ingresa el ID de tu casa de interés </h1>
+                                <h1 class="h5 text-gray-900 mb-4"> Ingresa el nombre de usuario </h1>
                             </div>
-                            <form class="house">
-                            <input type="text" class="form-control" id="txt-house" placeholder="ID, ex. 15">
-                            <br>
-                            <input type="button" class="btn btn-primary form-control" id="btn-save-house" value="Guardar Casa">
-                             <br>
-                              <br>
-                            </form>                         
-                            <div class="text-center">
-                                <h1 class="h5 text-gray-900 mb-4"> ¡Encuentra tu casa ideal! Llena los espacios según tus intereses</h1>
-                            </div>
-						<form class="place">
-                            <input type="text" class="form-control" id="txt-price" placeholder="Precio máximo a pagar, ex. 150000">
-                            <br>
-                            <input type="text" class="form-control" id="txt-area" placeholder="Area, ex. 30">
-                            <br>
-                            <input type="text" class="form-control" id="txt-zone" placeholder="Zona, ex. 10">
-                            <br>
-                            <input type="text" class="form-control" id="txt-habits" placeholder="Habitaciones, ex. 4">
-                             <br>
-                             <input type="text" class="form-control" id="txt-parking" placeholder="Parqueos, ex. 2">
-                             <br>
-							<input type="button" class="btn btn-primary form-control" id="btn-search-houses" value="Ver casas">
-							<br/>    
-							<br/>
-							<br/>
-							
-						</form>
-						<div class="text-center">
-                                <h1 class="h5 text-gray-900 mb-4"> O... ¡Búscala Tú Mismo!</h1>
-                            </div>
-                            <form class="place1">
-                            <br/>
-							<input type="button" class="btn btn-primary form-control" id="btn-see-houses" value="Ver todas las casas">   
-							<br/>
-							<br/>
-                            </form>                        
+						<form class="user">                                                               
+							<input type="text" class="form-control" id="txt-user" placeholder="Juan123">
+                            <br>							
+							<input type="button" class="btn btn-primary form-control" id="btn-crt-user" value="Registrar">
+							<br/>       
+						</form>                        
                     </div>
                     <div class="col-lg-4"></div>
                     </div>

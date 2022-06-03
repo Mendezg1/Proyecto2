@@ -14,23 +14,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dataAccessLayer.EmbeddedNeo4j;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Guardado
+ * Servlet implementation class Eliminar
  */
-@WebServlet("/Guardado")
-public class Guardado extends HttpServlet {
+@WebServlet("/Eliminar")
+public class Eliminar extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Guardado() {
+    public Eliminar() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,16 +42,14 @@ public class Guardado extends HttpServlet {
 	 	
 	 	JSONArray insertionResult = new JSONArray();
 	 	
-	 	String id = request.getParameter("id");
 	 	String name = request.getParameter("name");
+	 	String id = request.getParameter("id");
 	 	
 	 	 try ( EmbeddedNeo4j neo4jDriver = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 	        {
-	 		String myResultTx = neo4jDriver.Relation(name,id);
-        	
-		 	myResponse.put("resultado", myResultTx);
+			 	String myResultTx = neo4jDriver.Delete(name, id);
 	        	
-			 	//myResponse.put("resultado", myResultTx);
+			 	myResponse.put("resultado", myResultTx);
 	        } catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -59,7 +59,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/proyectoaed/Creation?name=' + $('#txt-user').val() ,
+			url: '/proy3/Creation?name=' + $('#txt-user').val() ,
 			success: function(data) {
 			    alert("Resultado: " + data.resultado);
 			}
@@ -68,18 +68,91 @@
 		
 	});
   
+  
+  $("#btn-delete-house").click(function(){ //hola1
+				
+		$.ajax( {
+			
+			type: "GET",
+			url: '/proy3/Eliminar?name=' + $('#txt-admn-name').val() +'&id=' + $('#txt-id').val() ,
+			success: function(data) {
+			    alert("Resultado: " + data.resultado);
+			}
+		} );
+		
+		
+	});
+
+	$("#btn-add-house").click(function(){ //hola1
+				
+		$.ajax( {
+			
+			type: "GET",
+			url: '/proy3/NewH?name=' + $('#txt-admn-name').val() +'&ide=' + $('#txt-1').val() +'&area=' + $('#txt-2').val() +'&precio=' + $('#txt-3').val() +'&zona=' + $('#txt-4').val() +'&habs=' + $('#txt-5').val() +'&parks=' + $('#txt-6').val() ,
+			success: function(data) {
+			    alert("Resultado: " + data.resultado);
+			}
+		} );
+		
+		
+	});
+
   //Evento del botón que me devuelve el listado de actores
-  $("#btn-search-houses").click(function(){
+  $("#btn-see-houses").click(function(){
 		//alert("The button was clicked 1");
 				
 		$.ajax( {
 			
 			type: "GET",
-			url: '/proyectoaed/HelloServlet',
+			url: '/proy3/HelloServlet',
 			success: function(data) {
 				//alert("Result" + data.resultado);
 			    var htmlHousesList = '<ul>';
 				$.each(data.casas, function(i,item){
+					  htmlHousesList += '<li>' + item + '</li>';
+				});
+				htmlHousesList += '</ul>';
+				$('#div-listado-casas').html("");
+				$('#div-listado-casas').append(htmlHousesList);
+			}
+		} );
+		
+		
+	});
+	
+	$("#btn-search-houses").click(function(){
+		//alert("The button was clicked 1");
+				
+		$.ajax( {
+			
+			type: "GET",
+			url: '/proy3/SearchH?price=' + $('#txt-price').val() + '&area=' + $('#txt-area').val() + '&zone=' + $('#txt-zone').val() + '&habits=' + $('#txt-habits').val() + '&parking=' + $('#txt-parking').val(),
+			success: function(data) {
+				//alert("Result" + data.resultado);
+			    var htmlHousesList = '<ul>';
+				$.each(data.encontrados, function(i,item){
+					  htmlHousesList += '<li>' + item + '</li>';
+				});
+				htmlHousesList += '</ul>';
+				$('#div-listado-casas').html("");
+				$('#div-listado-casas').append(htmlHousesList);
+			}
+		} );
+		
+		
+	});
+	
+	 $("#btn-show-likes").click(function(){
+		//alert("The button was clicked 1");
+				
+		$.ajax( {
+			
+			type: "GET",
+			url: '/proy3/SeeSaved?name=' + $('#txt-user').val(),
+			success: function(data) {
+				//alert("Result" + data.resultado);
+			    var htmlHousesList = '<ul>';
+				$.each(data.guardados, function(i,item){
 					  htmlHousesList += '<li>' + item + '</li>';
 				});
 				htmlHousesList += '</ul>';
@@ -97,7 +170,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/proyectoaed/Guardado?name=' + $('#txt-user1').val() + '&prop=' + $('#txt-prop').val() + '&value=' + $('#txt-value').val(),
+			url: '/proy3/Guardado?name=' + $('#txt-user').val() + '&id=' + $('#txt-house').val(),
 			success: function(data) {
 			    alert("Resultado: " + data.resultado);
 			}
