@@ -126,7 +126,7 @@
 		$.ajax( {
 			
 			type: "GET",
-			url: '/proy3/SearchH?price=' + $('#txt-price').val() + '&area=' + $('#txt-area').val() + '&zone=' + $('#txt-zone').val() + '&habits=' + $('#txt-habits').val() + '&parking=' + $('#txt-parking').val(),
+			url: '/proy3/SearchH?price=' + $('#txt-price').val() + '&area=' + $('#txt-area').val() + '&zone=' + $('#txt-zone').val() + '&habits=' + $('#txt-habits').val() + '&parking=' + $('#txt-parking').val() + '&name=' + $('#txt-user').val(),
 			success: function(data) {
 				//alert("Result" + data.resultado);
 			    var htmlHousesList = '<ul>';

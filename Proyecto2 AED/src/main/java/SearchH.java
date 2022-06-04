@@ -42,6 +42,7 @@ public class SearchH extends HttpServlet {
 	 	
 	 	JSONArray resultados = new JSONArray();
 	 	
+	 	String nombre = request.getParameter("name");
 	 	String price = request.getParameter("price");
 	 	String zone = request.getParameter("zone");
 	 	String area = request.getParameter("area");
@@ -51,7 +52,7 @@ public class SearchH extends HttpServlet {
 	 	
 	 	 try ( EmbeddedNeo4j neo4jDriver = new EmbeddedNeo4j( "bolt://localhost:7687", "neo4j", "Mendezg1122" ) )
 	        {
-	 		 	LinkedList<String> found = neo4jDriver.searchHouse(price, area, zone, habs, parks);
+	 		 	LinkedList<String> found = neo4jDriver.searchHouse(nombre, price, area, zone, habs, parks);
 	 		 	for(int i = 0; i < found.size(); i++) {
 	 		 		resultados.add(found.get(i));
 	 		 	}

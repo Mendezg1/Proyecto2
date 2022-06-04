@@ -83,7 +83,7 @@ public class EmbeddedNeo4j implements AutoCloseable{
          }
     }
     
-    public LinkedList<String> searchHouse(String price, String area, String zone, String habits, String parking)
+    public LinkedList<String> searchHouse(String name, String price, String area, String zone, String habits, String parking)
     {
     	 try ( Session session = driver.session() )
          {
@@ -94,7 +94,7 @@ public class EmbeddedNeo4j implements AutoCloseable{
                  @Override
                  public LinkedList<String> execute( Transaction tx )
                  {
-                	 String query = "MATCH (house:casa {";
+                	 String query = "MATCH (user:usuario {name:'"+name+"'}) - [:GUARDADO] -> (n:casa), (house:casa {";
                      if(area != "") {
                     	 String ar = area+"m^2";
                     	 query += "area:'" + ar +"'";
@@ -116,12 +116,16 @@ public class EmbeddedNeo4j implements AutoCloseable{
                     	 int precio = Integer.parseInt(price);
                     	 query += "WHERE house.precio <="+precio;
                      }
+                     query += " AND house.ide <> n.ide ";
                      if (area != "" || price != "" || zone != "" || habits != "" || parking != "")
-                    	 query+= " RETURN house.ide, house.precio, house.zona, house.area, house.habitaciones, house.parqueos ORDER BY house.ide";
+                    	 query+= " RETURN n.ide, n.precio, n.zona, n.area, n.habitaciones, n.parqueos ORDER BY n"
+                    	 		+ ".ide";
+                     LinkedList<String> saves = new LinkedList<String>();
+                     saves.add(query);
                      Result result = tx.run(query);
                      List<Record> registros = result.list();
                      
-                     LinkedList<String> saves = new LinkedList<String>();
+                     
                 	 LinkedList<String> myides = new LinkedList<String>();
                 	 LinkedList<String> myareas = new LinkedList<String>();
                 	 LinkedList<String> myzones = new LinkedList<String>();
@@ -141,6 +145,7 @@ public class EmbeddedNeo4j implements AutoCloseable{
                     	 myhabs.add(registros.get(i).get("house.habitaciones").toString());
                     	 saves.add(myides.get(i) + "              " +myprices.get(i) + "               " + myzones.get(i) + "                " + myareas.get(i) + "             " + myhabs.get(i) +  "                   " + myparks.get(i));
                      }
+                     
                      return saves;
                  }
              } );
